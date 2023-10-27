@@ -1,0 +1,116 @@
+from random import randrange, uniform,randint
+import numpy as np
+import math
+
+def random_poblation(cromosomas, genes):
+    resultado = []
+    for _ in range(0, cromosomas):
+        lista = []
+        for _ in range(0, genes):
+            temp = randint(0, 1)
+            #temp_rounded = round(temp, 0)
+            lista.append(temp)
+        resultado.append(lista)
+    return resultado
+
+
+def print_poblation_line(poblacion):
+    for cromosoma in poblacion:
+        print(cromosoma)
+
+
+def PUD(poblacion, X_rate):
+    poblacion_after = round(len(poblacion) * X_rate)
+    padres = []
+    madres = []
+    for cromosoma in range(0, poblacion_after):
+        if (cromosoma+1) % 2 == 0:
+            padres.append(poblacion[cromosoma])
+        else:
+            madres.append(poblacion[cromosoma])
+
+    print("poblacion")
+    print(print_poblation_line(poblacion))
+    print("madres")
+    print(madres)
+    print("padres")
+    print(padres)
+
+
+def RP(poblacion, x_rate):
+    pob_size = len(poblacion)
+
+    n_keep = math.ceil(pob_size * x_rate)
+
+    padres = []
+    madres = []
+    lista_aleatorios = []
+    for _ in range(0,n_keep):
+        temp = randint(1, n_keep)
+        lista_aleatorios.append(temp)
+
+    print(lista_aleatorios)
+    # lista_aleatorios = [1, 2, 4, 4, 2]  
+    # print(lista_aleatorios)
+    
+    for index, value in enumerate(lista_aleatorios):
+        if index % 2 == 0:
+            padres.append(poblacion[value-1])
+        else:
+            madres.append(poblacion[value-1])
+
+    print("Lista seleccionados")
+    print(lista_aleatorios)
+    print("poblacion")
+    print(print_poblation_line(poblacion))
+    print("madres")
+    print(madres)
+    print("padres")
+    print(padres)
+
+while True:
+    print("Que menu desea utilizar?")
+    # response_tdp =  input("Ingrese TDP -> Metodo de seleccion arriba - abajo\n")
+    # response_rp = input("Ingrese RP -> Metodo de seleccion aleatorio\n")
+    print("Ingrese TDP -> Metodo de seleccion arriba - abajo")
+    print("Ingrese RP -> Metodo de seleccion aleatorio")
+    response = input()
+
+
+
+    if(response == "TDP"):
+        cromosoma_input = input("Tamaño de la poblacion -> ")
+        longitud_cromosomas_input = input("Longitud de los cromosomas -> ")
+        tasa_selec_input = input("Tamaño de seleccion (0 a 1) -> ")
+        try:
+            cromosomas = int(cromosoma_input)
+            longitud_cromosomas = int(longitud_cromosomas_input)
+            tasa_selec = float(tasa_selec_input)  
+            resultado_poblacion_tdp = random_poblation(cromosomas, longitud_cromosomas)
+            PUD(resultado_poblacion_tdp, tasa_selec)
+        except ValueError:
+            print("Alguno de los valores ingresados no es válido.")
+
+
+    elif(response == "RP"):
+
+        cromosoma_input = input("Tamaño de la poblacion -> ")
+        longitud_cromosomas_input = input("Longitud de los cromosomas -> ")
+        tasa_selec_input = input("Tamaño de seleccion (0 a 1) -> ")
+        try:
+            cromosomas = int(cromosoma_input)
+            longitud_cromosomas = int(longitud_cromosomas_input)
+            tasa_selec = float(tasa_selec_input)  
+            resultado_poblacion_tdp = random_poblation(cromosomas, longitud_cromosomas)
+            RP(resultado_poblacion_tdp, tasa_selec)
+        except ValueError:
+            print("Alguno de los valores ingresados no es válido.")
+
+    else: 
+        print("Opcion no valida intente nuevamente ...")
+
+
+
+
+
+

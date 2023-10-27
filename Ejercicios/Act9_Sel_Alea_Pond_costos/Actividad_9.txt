@@ -1,0 +1,244 @@
+from random import randrange, uniform,randint, choice
+import numpy as np
+import math
+
+def random_poblation(cromosomas, genes):
+    resultado = []
+    for _ in range(0, cromosomas):
+        lista = []
+        for _ in range(0, genes):
+            temp = randint(0, 1)
+            lista.append(temp)
+        resultado.append(lista)
+    return resultado
+
+
+def random_weigths(cantidad):
+    lista = []
+    for x in range(cantidad):
+        aleatorio = uniform(1, 10)
+        aleatorio_rounded = round(aleatorio, 1)
+        lista.append(aleatorio_rounded)
+
+    return lista
+
+
+def random_values(cantidad):
+    lista = []
+    for x in range(cantidad):
+        aleatorio = uniform(1, 100)
+        lista.append(aleatorio)
+
+    return lista
+
+
+def random_probabilidades(cantidad):
+    lista = []
+    for x in range(cantidad):
+        aleatorio = uniform(0.0, 1.0) 
+        lista.append(aleatorio)
+
+    return lista
+
+
+def operation_profits(pesos):
+    lista = []
+    for wi in pesos:
+        tempo = wi + 5
+        lista.append(tempo)
+
+    return lista
+
+
+def knapsack_capacity(pesos):
+    suma = np.sum(pesos)/2
+    return suma
+
+
+def PN(cn):
+    up = 0
+    down = 0
+    lista_pn = []
+    #down = sum(range(1, n_keep + 1))
+    cumulative_sum_cm = sum(cn)
+
+    for x in cn:
+        up = x
+        down = cumulative_sum_cm
+        Pn = abs(up/down)
+        lista_pn.append(Pn)
+    
+    cumulative_sum = np.cumsum(lista_pn).tolist()
+
+    #rounded_sum = [round(x, 2) for x in lista_pn]
+
+    return cumulative_sum,lista_pn
+
+
+def operation_dot_product(pesos, poblacion):
+    array_1 = np.array(pesos)
+    array_2 = np.array(poblacion)
+
+    resultado = np.dot(array_1, array_2)
+
+    return resultado
+
+
+def RP(poblacion, w, V):
+    resultados = []
+    values_init_list = []
+    values_repair_list = []
+    index = 1
+    for fila in poblacion:
+        # fila = poblacion
+        xj = fila
+
+        values_init_list.append(operation_dot_product(xj,w))
+        
+        #print(f"Sumatoria -> {suma_rela}")
+        knapsak_full  = False
+        if(operation_dot_product(xj,w) > V):
+            knapsak_full = True
+            
+        while knapsak_full == True:
+            for i in range(len(xj)):
+                if xj[i] == 1:
+                    xj[i] = 0
+                    #print("suma relacion 1 antes", operation_dot_product(xj,w))
+                    if operation_dot_product(xj,w) < V:
+                        #print("suma relacion 1 despues", operation_dot_product(xj,w))
+                        knapsak_full = False
+                        break
+        
+        while knapsak_full == False:
+            for i in range(len(xj)):
+                if xj[i] == 0:
+                    xj[i] = 1
+                    #print("suma relacion 2 antes", operation_dot_product(xj,w))
+                    if operation_dot_product(xj,w) > V:
+                        xj[i] = 0
+                        #print("suma relacion 2 despues", operation_dot_product(xj,w))
+                        knapsak_full = True
+                        break
+        
+        values_repair_list.append(operation_dot_product(xj,w))
+        
+        resultados.append(xj)
+        #print(f"Cromosoma Final -> {xj}")
+        index += 1
+    return resultados
+
+
+def operation_aptitud(poblacion, costos):
+
+    array_1 = np.array(poblacion)
+    array_2 = np.array(costos)
+
+    resultado = np.dot(array_1, array_2)
+
+    return resultado.tolist()
+
+
+resultado_random_poblacion = random_poblation(7, 5)
+
+#PRUEBA DE LA PRESENTACION 
+# resultado_random_poblacion = [
+#     [0, 0, 0, 1, 0],
+#     [0, 0, 0, 1, 0],
+#     [0, 1, 0, 1, 1],
+#     [0, 0, 0, 1, 1],
+#     [0, 1, 0, 1, 0],
+#     [0, 0, 0, 1, 1],
+#     [0, 0, 1, 0, 1]
+# ]
+# pesos = [4.449866505646734, 2.8020453763579907,8.238637313434353, 4.720721708527522, 1.3429260764339572]
+
+#VALORES PARA LAS PRUEBAS GUARDADOS EN VARIABLES PARA QUE FUNCIONE EL METODO
+tasa_de_seleccion = 0.5
+pesos = random_weigths(5)
+valores = operation_profits(pesos)
+px = operation_aptitud(resultado_random_poblacion,valores)
+sum_knapsack_capacity = knapsack_capacity(pesos)
+poblacion_reparada = RP(resultado_random_poblacion,pesos,sum_knapsack_capacity)
+numeros_aleatorios_var = random_probabilidades(5)
+
+def N_keep(pob_size, x_rate):
+    #pob_size = len(poblacion)
+    n_keep = math.ceil(pob_size * x_rate)
+    return n_keep
+
+def n_poblation(poblacion):
+    pob_size = len(poblacion)
+    return pob_size
+
+def cromos_to_values(chromosomes, values):
+    value_to_cromos = {}
+    for i in range(len(chromosomes)):
+        cromos_str = str(chromosomes[i])
+        value = values[i]
+
+        if value not in value_to_cromos:
+            value_to_cromos[value] = []
+
+        value_to_cromos[value].append(cromos_str)
+
+    return value_to_cromos
+
+def SCW(cromosomas, costos, x_rate):
+    
+    costos = sorted(costos)
+
+    selected_cromos = math.ceil(len(cromosomas) * x_rate) 
+    selected_costs = math.ceil(len(costos) * x_rate) 
+    selected_elements = cromosomas[:selected_cromos] 
+    selected_elem_costs = costos[:selected_costs] 
+    not_selected_elem_costs = costos[selected_costs:]
+    min_not_select_elem_costs = min(not_selected_elem_costs)
+
+    cromosomas_dict = cromos_to_values(cromosomas,costos)
+    cromosoma_descartado = cromosomas_dict[min_not_select_elem_costs]
+
+    cn_list = []
+
+    for ci in selected_elem_costs:
+        temp_cn = ci - (min_not_select_elem_costs)
+        cn_list.append(temp_cn)
+
+    sumatory_cn_list  = sum(cn_list)
+
+    sum_valores_pn,valores_pn = PN(cn_list)
+    numeros_aleatorios = random_probabilidades(len(valores_pn))
+
+    padres = []
+    madres = []
+    append_to_madres = True
+    for numero_aleatorio in numeros_aleatorios:
+        for i, acumulado in enumerate(sum_valores_pn):
+            if numero_aleatorio <= acumulado:
+                if append_to_madres:
+                    padres.append(selected_elements[i])
+                else:
+                     madres.append(selected_elements[i])
+                append_to_madres = not append_to_madres
+                break
+                
+        else:
+            lista_seleccionada = choice([padres, madres])
+            lista_seleccionada.append(selected_elements[-1])
+
+    print("Cromosomas descartados: \n", not_selected_elem_costs)
+    print("Cromosoma descartado: " + str(min_not_select_elem_costs))
+    print("Fitness del cromosoma descartado" + str(cromosoma_descartado))
+    print("Valores de Cn: \n", cn_list)
+    print("Valores de sumatoria de costos " + str(sumatory_cn_list))
+    print("Valores de Pn :\n", valores_pn, "\nSumatoria de las probabilidades:\n",sum_valores_pn)
+    print("Numeros aleaotorios: ", numeros_aleatorios)
+    print("madres: \n",madres)
+    print("padres: \n",padres)
+
+#Llamado a la funcion del método de selección aleatoria ponderada por costo. 
+SCW(poblacion_reparada,px,tasa_de_seleccion)
+
+
+
+

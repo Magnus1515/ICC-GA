@@ -1,0 +1,62 @@
+from random import randrange, uniform,randint
+import numpy as np
+import math
+
+def random_poblation(cromosomas, genes):
+    resultado = []
+    for _ in range(0, cromosomas):
+        lista = []
+        for _ in range(0, genes):
+            temp = randint(0, 1)
+            #temp_rounded = round(temp, 0)
+            lista.append(temp)
+        resultado.append(lista)
+    return resultado
+
+def print_poblation_line(poblacion):
+    for cromosoma in poblacion:
+        print(cromosoma)
+
+
+
+resultado_poblacion = random_poblation(10, 10)
+#PUD(resultado_poblacion, 0.5)
+
+def RP(poblacion, x_rate):
+    pob_size = len(poblacion)
+
+    n_keep = math.ceil(pob_size * x_rate)
+
+    padres = []
+    madres = []
+    lista_aleatorios = []
+    for _ in range(0,n_keep):
+        temp = randint(1, n_keep)
+        lista_aleatorios.append(temp)
+
+    
+    # lista_aleatorios = [1, 2, 4, 4, 2]  
+    # print(lista_aleatorios)
+    
+    for index, value in enumerate(lista_aleatorios):
+        if index % 2 == 0:
+            padres.append(poblacion[value-1])
+        else:
+            madres.append(poblacion[value-1])
+            
+    print("Lista seleccionados")
+    print(lista_aleatorios)
+    print("poblacion: ")
+    print(print_poblation_line(poblacion))
+    print("madres: ")
+    print(madres)
+    print("padres: ")
+    print(padres)
+
+resultado_poblacion2 = random_poblation(12, 3)
+RP(resultado_poblacion2,0.5)
+
+
+
+
+

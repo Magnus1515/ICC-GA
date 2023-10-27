@@ -1,0 +1,29 @@
+def random_poblation(cromosomas, genes):
+    resultado = []
+    for _ in range(0, cromosomas):
+        lista = []
+        for _ in range(0, genes):
+            temp = randint(0, 1)
+            #temp_rounded = round(temp, 0)
+            lista.append(temp)
+        resultado.append(lista)
+    return resultado
+
+def PUD(poblacion, X_rate):
+    poblacion_after = round(len(poblacion) * X_rate)
+    padres = []
+    madres = []
+    for cromosoma in range(0, poblacion_after):
+        if (cromosoma+1) % 2 == 0:
+            padres.append(poblacion[cromosoma])
+        else:
+            madres.append(poblacion[cromosoma])
+
+    print(poblacion)
+    print("madres")
+    print(madres)
+    print("padres")
+    print(padres)
+
+resultado_poblacion = random_poblation(10, 10)
+PUD(resultado_poblacion, 0.5)
