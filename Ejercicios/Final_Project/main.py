@@ -9,10 +9,6 @@ from num2words import num2words
 
 
 
-best_cromos_after_runs = []
-worst_cromos_after_runs = []
-best_fitnes_after_runs = []
-worst_fitness_after_runs = []
 
 n_runs = 30 
 n_generations = 1000
@@ -30,10 +26,21 @@ pesos = [70, 73, 77, 80, 82, 87, 90, 94, 98, 106, 110, 113, 115, 118, 120]
 valores = [135, 139, 149, 150, 156, 163, 173, 184, 192, 201, 210, 214, 221, 229, 240]
 
 tao = 1.0
-
 ant_k = 0
-
 zj = 0
+hormigas = []
+
+def random_poblation(cromosomas, genes):
+    resultado = []
+    for _ in range(0, cromosomas):
+        lista = []
+        for _ in range(0, genes):
+            temp = randint(0, 1)
+            lista.append(temp)
+        resultado.append(lista)
+    return resultado
+
+
 
 def Pj(valores,tao):
     lista_pj = []
@@ -68,19 +75,24 @@ print(cumulative_list_valores)
 
 
 selected_elem = []
+best_solutions = []
 
 while True:
+    #Si no ha trabajo todavia, existe
     while ant_k == 0:
+        
         while knapsack_capacity >= 0:
+            #seleccionamos un Objeto
             for numero_aleatorio in random_prob_list:
-                for i,acumulado in enumerate(cumulative_list_valores)
+                for i,acumulado in enumerate(cumulative_list_valores):
                     if numero_aleatorio <= acumulado:
                         selected_elem.append(pesos[i])
                         knapsack_capacity -= pesos[i]
                         zj += valores[i]
-
+        
+    
+    best_solutions.append(selected_elem)
                     
-
 
 
 
