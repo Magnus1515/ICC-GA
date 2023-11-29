@@ -28,6 +28,9 @@ valores = [135, 139, 149, 150, 156, 163, 173, 184, 192, 201, 210, 214, 221, 229,
 tao = 1.0
 ant_k = 0
 zj = 0
+
+# Variable feromonas 
+
 hormigas = []
 
 def random_poblation(cromosomas, genes):
@@ -41,11 +44,11 @@ def random_poblation(cromosomas, genes):
     return resultado
 
 
-
 def Pj(valores,tao):
     lista_pj = []
     #Regresa los 15 valores
-    cumulative_sum_pj = sum(tao for _ in range(valores))
+    cumulative_sum_pj = sum(tao for _ in range(len(valores)))
+
     
     for _ in range(len(valores)):
         up = tao
@@ -58,6 +61,7 @@ def Pj(valores,tao):
     return cumulative_sum_list
 
 
+
 def random_probabilidades(cantidad):
     lista = []
     for x in range(cantidad):
@@ -67,31 +71,48 @@ def random_probabilidades(cantidad):
     return lista
 
 
-cumulative_list_valores = Pj(valores,tao)
+#la cantidad de objetos va a depender del peso de la mochila 
+#la cantidad de soluciones que tengan no puede ser mayor que el peso de la mochila
 
-random_prob_list = random_probabilidades(len)
+def ants_neighborhood(num_ants, num_obj):
 
-print(cumulative_list_valores)
+    hormigas = []
+    for _ in range(num_ants):
+        objetos_seleccionados = [random.choice([0, 1]) for _ in range(num_obj)]
+        capacidad_restante = calcular_capacidad_restante(objetos_seleccionados)
+        feromona = 1.0  # Puedes ajustar esto según sea necesario
+        hormigas.append(objetos_seleccionados)
+    return hormigas
 
 
-selected_elem = []
-best_solutions = []
 
-while True:
+
+
+
     #Si no ha trabajo todavia, existe
-    while ant_k == 0:
-        
-        while knapsack_capacity >= 0:
-            #seleccionamos un Objeto
-            for numero_aleatorio in random_prob_list:
-                for i,acumulado in enumerate(cumulative_list_valores):
-                    if numero_aleatorio <= acumulado:
-                        selected_elem.append(pesos[i])
-                        knapsack_capacity -= pesos[i]
-                        zj += valores[i]
-        
-    
-    best_solutions.append(selected_elem)
+    #while ant_k == 0:
+
+def update_pheromone(ants, evaporation_rate):
+
+    while knapsack_capacity >= 0:
+        #seleccionamos un Objeto
+        random_prob_list = random_probabilidades(15)
+        cumulative_list_valores = Pj(valores,tao)
+
+        for numero_aleatorio in random_prob_list:
+            for i,acumulado in enumerate(cumulative_list_valores):
+                if numero_aleatorio <= acumulado:
+                    selected_elem.append(pesos[i])
+                    print(pesos[i])
+                    knapsack_capacity -= pesos[i]
+                    zj += valores[i]
+
+
+# Una que crea las hormigas los obejtos, la capacidad, la feromona -> y reparar
+# Una que me actualiza las feromonas
+# Una que te selecciona los objetos 
+# Funcion principal
+   
                     
 
 
